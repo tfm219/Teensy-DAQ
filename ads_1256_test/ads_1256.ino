@@ -86,6 +86,7 @@ int32_t read_Value() {
     digitalWriteFast(ADS_CS_PIN, LOW); //Pull SS Low to Enable Communications with ADS1247
     //delayMicroseconds(5); // RD: Wait 25ns for ADC12xx to get ready
     SPI.transfer(RDATA); //Issue RDATA
+    delayClocks(50);
     //delayMicroseconds(7); //
     adc_val |= SPI.transfer(NOP);
     //delayMicroseconds(10);
