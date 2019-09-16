@@ -269,13 +269,12 @@ int32_t readSingle(byte pChan) {
  */
 int32_t readDiff(byte pChan, byte nChan) {
     int32_t adc_val = 0; // unsigned long is on 32 bits
-  
+    //waitforDRDY();
     digitalWriteFast(ADS_CS_PIN, LOW); //Speed test for faster location of this write
     //delayMicroseconds(10);
     SPI.beginTransaction(SPISettings(SPI_SPEED, MSBFIRST, SPI_MODE1));
     //digitalWriteFast(ADS_CS_PIN, LOW); //Speed test for faster location of this write
-    //delayMicroseconds(5);
-
+   // waitforDRDY();
     if (pChan != 0 && pChan <= 8) {
       Serial.print(pChan);
       Serial.print(", ");
@@ -288,38 +287,36 @@ int32_t readDiff(byte pChan, byte nChan) {
     byte chans = pChan | nChan; //xxxx1000 - P_AIN = pChan, N_AIN = nChan
     
     //while (digitalRead(ADS_RDY_PIN)) {} ;
-    //waitforDRDY();
+    waitforDRDY();
     
     SPI.transfer(WREG | MUX); // send 1st command byte, address of the register // write (0x50) MUX register (0x01)
     SPI.transfer(0x00);     // send 2nd command byte, number of registers to be read/written − 1, write one register only
     SPI.transfer(chans);   // write the databyte to the register
-    //delayMicroseconds(2);
+    //delayMicroseconds(1);
+    pause4;
     
-    waitforDRDY();
+    //waitforDRDY();
     
     //SYNC command 1111 1100
     SPI.transfer(SYNC);
-    //delayMicroseconds(5);
-  
+    //delayMicroseconds(3);
+    pause24;
     //WAKEUP 0000 0000
     SPI.transfer(WAKEUP);
     //delayMicroseconds(1);
   
     SPI.transfer(RDATA); // Read Data 0000  0001 (01h)
     //delayMicroseconds(7);
-    delayClocks(50);
-    
+    //delayClocks(50);
+    pause50;
     
     adc_val = SPI.transfer(NOP);
     adc_val <<= 8; //shift to left
     adc_val |= SPI.transfer(NOP);
     adc_val <<= 8;
     adc_val |= SPI.transfer(NOP);
-  
-    //delayMicroseconds(10);
     
     digitalWrite(ADS_CS_PIN, HIGH);
-    //delayMicroseconds(2);
   
     if (adc_val > 0x7fffff) { //if MSB == 1
       adc_val = adc_val - 16777216; //do 2's complement, keep the sign this time!

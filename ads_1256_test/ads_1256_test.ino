@@ -1,5 +1,5 @@
 //#include <SPI.h>
-#include "ads1256_constants.h"
+#include "ADS1256.h"
 //#include <ads_1256_stuff.ino>
 
 //(other stuff for getting the ADS1526 to work is in the next tab
@@ -30,7 +30,7 @@ double bitToVolt = 0.;
 void setup() {
   byte ADS_gain = 12;
   delay(1000);
-  Serial.begin(115200);
+  Serial.begin(115200); //2000000 has 0% error (pjrc.com/teensy/td_uart.html)(115200 has .02 with teensy 3.5, -0.02 with 3.2)
   Serial.println("booting");
   //initialize the ADS
   pinMode(ADS_CS_PIN, OUTPUT);
@@ -54,9 +54,9 @@ void loop() {
   // put your main code here, to run repeatedly:
 
 double value = 0;
-//val1 = readDiff_0_1();//readSingle(P_AIN0);
-val1 = readSingle_2();//Value();
-val2 = readSingle_3();//readSingle(P_AIN1);
+val1 = readDiff_0_1();//readSingle(P_AIN0);
+//val1 = readSingle_0();//Value();
+//val2 = readSingle_3();//readSingle(P_AIN1);
 //val3 = readDiff_4_5();
 //val4 = readDiff_6_7();
 //for (int i = 0; i <1; i++){
@@ -65,26 +65,5 @@ val2 = readSingle_3();//readSingle(P_AIN1);
 //}
 
 value /=1.;
-  Serial.print(val1 / bitToVolt);
-  Serial.print(" | ");
-  Serial.println(val2 / bitToVolt);
-  //Serial.print("\n");
-  //Serial.println(val2);// / bitToVolt);
-  /*//Serial.print("\n");
-  Serial.println(val3);
-  //Serial.print("\n");
-  Serial.println(val4);*/
-  //Serial.print("\n\n");
-  //Serial.println(val3);
-
-//
-//double value = 0;
-//for (int i = 0; i <10; i++){
-//  value += read_Value();
-//}
-//
-//value /= 10.;
-//value /= bitToVolt;
-//
-//Serial.println(value,11);
+  Serial.println(val1 / bitToVolt, 6);
 }
