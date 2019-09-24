@@ -16,31 +16,23 @@
 
 
 //put the ADC constants here
-
 double resolution = pow(2, 24);// - 1;// 2^23-1 //8388608.;
-
 //this needs to match the setting in the ADC init function in the library tab
 double Gain = 1.; //be sure to have a period 
-
 double vRef = 5.0; //reference voltage
-
 //we'll calculate this in setup
 double bitToVolt = 0.;
 
 void setup() {
-  byte ADS_gain = 12;
   delay(1000);
   Serial.begin(115200); //2000000 has 0% error (pjrc.com/teensy/td_uart.html)(115200 has .02 with teensy 3.5, -0.02 with 3.2)
   Serial.println("booting");
   //initialize the ADS
   pinMode(ADS_CS_PIN, OUTPUT);
-
   pinMode(ADS_RDY_PIN, INPUT);
   pinMode(ADS_RST_PIN, OUTPUT);
-
   initADS();
   Serial.println("done init");
-
   //determine the conversion factor
     //do some calculations for the constants
   bitToVolt = (resolution*Gain)/(2 * vRef);
