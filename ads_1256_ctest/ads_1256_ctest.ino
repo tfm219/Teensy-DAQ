@@ -33,7 +33,6 @@ int32_t val1;
 int32_t val2;
 int32_t val3;
 int32_t val4;
-
 void loop() {
   //adc.delayClocks(125);
   //val1 = adc.readSingle_2();//Single_2();
