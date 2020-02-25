@@ -7,7 +7,7 @@
 #include "stdint.h"
 #include "stdlib.h"
 
-#define SPI_SPEED 2000000 //2500000
+#define SPI_SPEED 2500000 //2500000
 #define tClkIn 0.130208333 //microseconds (130.208333 nanoseconds
 
 
@@ -165,10 +165,10 @@ ADS1255/6. A shorted sensor produces a very small signal while an open-circuit s
 
 class ADS1256 {
   public:
-    ADS1256(); //Create ADS with default valuesn
-    ADS1256(int ADS_RST_PIN, int ADS_CS_PIN, int ADS_RDY_PIN);
-    ADS1256(int ADS_RST_PIN, int ADS_CS_PIN, int ADS_RDY_PIN, double Gain);
-    void begin();
+    //ADS1256(); //Create ADS with default valuesn
+    //ADS1256(int RST_PIN, int CS_PIN, int RDY_PIN);
+    ADS1256(int RST_PIN, int CS_PIN, int RDY_PIN, double Gain);
+    void beginADS();
     int32_t readValue();
     void setChannel(byte pChan);
     void setChannel(byte pChan, byte nChan);
@@ -204,13 +204,14 @@ class ADS1256 {
     int32_t readDiff_6_7();
     int32_t readSingle(byte pChan);
     int32_t readDiff(byte pChan, byte nChan);
-    void waitforDRDY();
+    
     int32_t getRegisterValue(uint8_t regAdress);
     void sendCMD(uint8_t cmd);
     void resetADS();
     void setRegisterValue(uint8_t regAdress, uint8_t regValue);
     double convertToVolts(double value);
     void delayClocks(double clocks);
+    void dClk(double clocks);
     void delay4Clocks();
     void delay24Clocks();
     void delay50Clocks();
@@ -219,19 +220,26 @@ class ADS1256 {
     int getRDYPin();
     int getCSPin();
     int getRSTPin();
-    void setDRDYState(int State);
-    //static void DRDY_Interrupt();
+    void delayM(uint32_t nMicros);
+    void dM(uint32_t nMicros, uint32_t startMicros);
+    void setDRDYLow();
+    void delayTest();
+    void startSPI();
+    void endSPI();
   private:
-    int DRDY_state;
-    int ADS_CS_PIN;
-    int ADS_RST_PIN;
-    int ADS_RDY_PIN;
+    //unsigned long startMicros;
+    volatile int DRDY_state;
+    int CS_PIN;
+    int RST_PIN;
+    int RDY_PIN;
     double Gain;
     int dataRate;
     int vRef;
     double resolution;
     double clockMult;
     double bitToVolt;
+    void waitforDRDY();
+    void waitforDRDY2();
 };
 
 
