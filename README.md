@@ -1,7 +1,7 @@
 # ADS1256
 
-This is a repository for the use of the ADS1256 ADC Breakout with the Teensy Microcontroller
-Connect the wires as follows:
+<p>This is a repository for the use of the ADS1256 ADC Breakout with the Teensy Microcontroller</p>
+<p>Connect the wires as follows:</p>
     <li>RST  - pin 4</li>
     <li>DIN  - pin 11 (MOSI)</li>
     <li>DOUT - pin 12 (MISO)</li>
