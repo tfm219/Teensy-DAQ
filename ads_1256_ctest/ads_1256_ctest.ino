@@ -39,7 +39,6 @@ int32_t val1;
 int32_t val2;
 int32_t val3;
 int32_t val4;
-
 void loop() {
   //digitalWriteFast(3, HIGH);
   //val1 = adc.readSingle_0();//Single_2();
